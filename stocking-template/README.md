@@ -9,9 +9,9 @@ onto the sheet at the right size with no scaling.
 
 | File | What you get | Size of one stocking |
 |---|---|---|
-| [`svg/stocking-large.svg`](svg/stocking-large.svg) | 1 stocking, as big as the sheet allows | **197 × 280 mm** |
-| [`svg/stocking-pair.svg`](svg/stocking-pair.svg) | 2 stockings nested head-to-toe | **173 × 246 mm** |
-| [`svg/stocking-ornaments.svg`](svg/stocking-ornaments.svg) | 6 smaller stockings | **89 × 127 mm** |
+| [`svg/stocking-large.svg`](svg/stocking-large.svg) | 1 stocking, as big as the sheet allows | **186 × 280 mm** |
+| [`svg/stocking-pair.svg`](svg/stocking-pair.svg) | 2 stockings nested head-to-toe | **154 × 232 mm** |
+| [`svg/stocking-ornaments.svg`](svg/stocking-ornaments.svg) | 6 smaller stockings | **89 × 134 mm** |
 
 <p align="center">
   <img src="preview/stocking-large.png" width="32%" alt="One large stocking on the sheet">
@@ -19,10 +19,15 @@ onto the sheet at the right size with no scaling.
   <img src="preview/stocking-ornaments.png" width="32%" alt="Six smaller stockings in a grid">
 </p>
 
-Every stocking has a **9 mm ribbon hole** in the cuff (8 mm on the ornaments)
+The silhouette is the classic one: a **wide cuff band** notched in at both
+sides, a leg narrower than the cuff, and a foot reaching well forward into a
+big rounded toe over a gently **arched sole**.
+
+Every stocking has a **10 mm ribbon hole** in the cuff (8 mm on the ornaments)
 and three **score** lines — the cuff band, a heel patch and a toe patch — which
-give kids something to paint inside and make the shape read as a stocking
-rather than a boot.
+close off the areas kids paint. The ribbon hole is placed over the shape's
+centre of mass rather than the middle of the cuff, so the piece hangs upright
+instead of tipping toe-down.
 
 ## Line colours
 
@@ -42,7 +47,7 @@ you may prefer no marks at all.
 1. **Upload.** Glowforge app → *Create* → *Upload* → pick the SVG.
 2. **Check the scale before you print.** Select the stocking and read the
    size Glowforge reports. It must match the table above — the large one is
-   **197.0 × 280.0 mm**. If it comes in at some other size, the importer has
+   **186.0 × 280.0 mm**. If it comes in at some other size, the importer has
    rescaled it; type the correct dimensions in and re-centre on the material.
 3. **Set the steps.** Red → Cut, blue → Score or Ignore.
 4. **Test first.** Run a small test cut on a scrap corner of the same sheet
@@ -102,15 +107,16 @@ Useful knobs near the top of `generate_stockings.py`:
   Everything else is a scaled copy of it, so the shape only has to be right once.
 - `SHEET`, `MARGIN`, `CLEARANCE` — sheet size, edge margin and the gap held
   between parts.
-- `HANG_HOLE_DIA`, `HANG_HOLE_CENTRE` — ribbon hole, or drop it by passing
-  `hang_hole=False`.
+- `HANG_HOLE_DIA`, `HANG_HOLE_Y` — ribbon hole size and how far down the cuff
+  it sits; its x position is computed from the centroid. Drop it entirely by
+  passing `hang_hole=False`.
 - `CUFF_Y`, `HEEL_SCORE`, `TOE_SCORE` — the decorative score lines.
 
 `generate_stockings.py` prints a measured report each run, so layout changes
 are checked rather than eyeballed:
 
 ```
-stocking-pair.svg   2 up  173.3 x 246.2 mm  part gap 5.0 mm  sheet edge 10.0 mm  hole bridge 17.8 mm
+stocking-pair.svg   2 up  153.9 x 231.6 mm  part gap 5.0 mm  sheet edge 10.0 mm  hole bridge 18.3 mm
 ```
 
 - **part gap** — closest approach between two cut outlines

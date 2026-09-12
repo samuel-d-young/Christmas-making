@@ -45,27 +45,39 @@ STROKE_W = 0.1              # thin stroke; the laser cuts the path centreline
 # --------------------------------------------------------------------------
 
 OUTLINE = [
-    ("cuff-top",   "L", (36, 0), (112, 0)),
-    ("corner-tr",  "C", (112, 0), (116, 0), (118, 2), (118, 6)),
-    ("leg-front",  "C", (118, 6), (117, 60), (110, 115), (110, 168)),
-    ("instep",     "C", (110, 168), (110, 200), (132, 229), (166, 236)),
-    ("toe-upper",  "C", (166, 236), (184, 240), (200, 248), (200, 260)),
-    ("toe-tip",    "C", (200, 260), (200, 272), (188, 282), (170, 282)),
-    ("sole",       "C", (170, 282), (130, 285), (70, 285), (30, 282)),
-    ("heel-under", "C", (30, 282), (12, 281), (0, 266), (0, 244)),
-    ("heel-back",  "C", (0, 244), (0, 206), (34, 190), (34, 155)),
-    ("leg-back",   "C", (34, 155), (34, 100), (30, 55), (30, 6)),
-    ("corner-tl",  "C", (30, 6), (30, 2), (32, 0), (36, 0)),
+    # --- cuff: a wide band with a gently bowed top edge, notched in at the
+    # bottom on both sides.  The overhang and the notch are what make this
+    # read as a Christmas stocking rather than a sock. ---
+    ("cuff-top",   "C", (18, 6), (60, 0), (116, 0), (150, 5)),
+    ("corner-tr",  "C", (150, 5), (154, 6), (156, 9), (156, 15)),
+    ("cuff-right", "C", (156, 15), (157, 30), (157, 46), (156, 60)),
+    ("notch-r",    "C", (156, 60), (156, 68), (149, 72), (141, 72)),
+    ("shoulder-r", "C", (141, 72), (137, 72), (136, 77), (136, 82)),
+    # --- leg: narrower than the cuff, easing into the ankle ---
+    ("leg-front",  "C", (136, 82), (138, 122), (130, 160), (128, 196)),
+    # --- foot: reaches well forward of the leg, big rounded toe ---
+    ("instep",     "C", (128, 196), (127, 222), (144, 242), (176, 250)),
+    ("toe-upper",  "C", (176, 250), (192, 254), (200, 262), (199, 274)),
+    ("toe-tip",    "C", (199, 274), (198, 288), (186, 300), (166, 301)),
+    ("sole-toe",   "C", (166, 301), (142, 302), (120, 294), (98, 293)),
+    ("sole-heel",  "C", (98, 293), (78, 292), (56, 301), (38, 301)),
+    ("heel-under", "C", (38, 301), (18, 301), (0, 288), (0, 264)),
+    ("heel-back",  "C", (0, 264), (0, 234), (36, 218), (36, 186)),
+    ("leg-back",   "C", (36, 186), (36, 140), (34, 110), (34, 82)),
+    ("shoulder-l", "C", (34, 82), (34, 77), (31, 72), (27, 72)),
+    ("notch-l",    "C", (27, 72), (19, 72), (12, 68), (12, 60)),
+    ("cuff-left",  "C", (12, 60), (11, 46), (11, 30), (12, 15)),
+    ("corner-tl",  "C", (12, 15), (12, 9), (14, 6), (18, 6)),
 ]
 
-CUFF_Y = 48.0                       # cuff band score, this far below the top
-HANG_HOLE_CENTRE = (74.0, 25.0)     # centred in the cuff band
-HANG_HOLE_DIA = 9.0                 # takes a fat ribbon or twine
+CUFF_Y = 84.0                       # closes off the cuff band for painting
+HANG_HOLE_Y = 30.0                  # height of the ribbon hole within the cuff
+HANG_HOLE_DIA = 10.0
 
 # Score lines anchored to (segment name, t) points on the outline, with the
 # two Bezier handles given as offsets from those anchors.
-HEEL_SCORE = (("heel-back", 0.17), (22, 9), ("sole", 0.87), (-5, -26))
-TOE_SCORE = (("sole", 0.16), (18, -6), ("toe-upper", 0.20), (6, 14))
+HEEL_SCORE = (("heel-back", 0.30), (24, 12), ("sole-heel", 0.72), (-6, -26))
+TOE_SCORE = (("sole-toe", 0.15), (18, -4), ("toe-upper", 0.35), (3, 16))
 
 FLATTEN_STEPS = 48                  # samples per cubic when measuring
 
@@ -124,8 +136,21 @@ def bbox(points):
     return min(xs), min(ys), max(xs), max(ys)
 
 
+def centroid_x(points):
+    """Area-weighted centroid x of a closed polygon."""
+    area = cx = 0.0
+    for (ax, ay), (bx, by) in zip(points, points[1:] + points[:1]):
+        cross = ax * by - bx * ay
+        area += cross
+        cx += (ax + bx) * cross
+    return cx / (3.0 * area)
+
+
 BASE = geometry(OUTLINE)
 BASE_BBOX = bbox(flatten(BASE))
+# The foot sticks out to one side, so a hole in the middle of the cuff would
+# hang crooked.  Putting it over the centre of mass makes the piece hang level.
+HANG_HOLE_CENTRE = (centroid_x(flatten(BASE)), HANG_HOLE_Y)
 BASE_W = BASE_BBOX[2] - BASE_BBOX[0]
 BASE_H = BASE_BBOX[3] - BASE_BBOX[1]
 
