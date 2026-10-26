@@ -9,3 +9,7 @@ Files and patterns for Christmas craft projects.
   layouts: one large stocking, a nested pair, and six smaller ornaments.
   Use them as wooden tracing templates for fabric stockings, or cut them as
   finished wooden stockings for kids to paint and hang.
+- **[door-sign](door-sign/)**: "Merry Christmas from the Youngs" front-door
+  sign in elegant script, for the same Glowforge Aura and 300 × 300 mm sheet.
+  Three concepts: freestanding script on a swash, a holly wreath, and an
+  engraved bauble.
