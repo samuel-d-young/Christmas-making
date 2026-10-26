@@ -255,7 +255,7 @@ def emit(name, title, **layers):
 def report(name, cut, ties=0, engrave=None):
     x0, y0, x1, y1 = (cut if cut is not None else engrave).bounds
     edge = min(x0, y0, SHEET - x1, SHEET - y1)
-    msg = f"{name:18s} {x1 - x0:5.1f} x {y1 - y0:5.1f} mm  sheet edge {edge:4.1f} mm"
+    msg = f"{name:25s} {x1 - x0:5.1f} x {y1 - y0:5.1f} mm  sheet edge {edge:4.1f} mm"
     if cut is not None:
         msg += f"  pieces {len(parts(cut))}  ties {ties:2d}  thin wood {thinnest_report(cut):4.1f} mm2"
     print(msg)
@@ -288,8 +288,17 @@ def door_script():
 # Concept 2: script welded across a wreath ring, holly at the foot
 # --------------------------------------------------------------------------
 
+WREATH_CY, WREATH_R_OUT, WREATH_R_IN = 146.0, 134.0, 123.0
+HANG_HOLE_DIA = 5.0         # ribbon hole through both layers, top of the band
+
+
+def wreath_hang_hole():
+    band_mid = (WREATH_R_OUT + WREATH_R_IN) / 2
+    return Point(CX, WREATH_CY - band_mid).buffer(HANG_HOLE_DIA / 2, quad_segs=24)
+
+
 def door_wreath():
-    cy, r_out, r_in = 146.0, 134.0, 123.0
+    cy, r_out, r_in = WREATH_CY, WREATH_R_OUT, WREATH_R_IN
     wreath = ring(CX, cy, r_out, r_in)
 
     # Ribbon-wrapped look: short scored diagonals all the way round the band,
@@ -336,10 +345,37 @@ def door_wreath():
 
     art = unary_union([wreath, letters, rail, holly])
     art, ties = weld(art)
+    # Trim to the backing disc so no holly spike overhangs the rim.
+    hole = wreath_hang_hole()
+    art = art.intersection(Point(CX, cy).buffer(r_out, quad_segs=96)).difference(hole)
     veins = [v.difference(unary_union(berries).buffer(0.8)) for v in veins]
     wraps = [w.intersection(wreath.buffer(-1.2)).difference(art.difference(wreath).buffer(1.0))
-             for w in wraps]
+              .difference(hole.buffer(1.5)) for w in wraps]
     return art, ties, [w for w in wraps if not w.is_empty] + veins
+
+
+def door_wreath_backing():
+    """Bottom layer: a plain disc the wreath glues onto, flush at the rim."""
+    disc = Point(CX, WREATH_CY).buffer(WREATH_R_OUT, quad_segs=96)
+    return disc.difference(wreath_hang_hole())
+
+
+def layered_preview(name, title, top, top_score, backing):
+    """Display-only: the wreath glued on a painted backing disc."""
+    svg = (f'<?xml version="1.0" encoding="UTF-8"?>\n'
+           f'<svg xmlns="http://www.w3.org/2000/svg" width="{SHEET:g}mm" height="{SHEET:g}mm" '
+           f'viewBox="0 0 {SHEET:g} {SHEET:g}">\n  <title>{title}</title>\n'
+           f'  <rect width="{SHEET:g}" height="{SHEET:g}" fill="#ffffff"/>\n'
+           f'  <path d="{poly_d(backing)}" fill="#2f5d46" fill-rule="evenodd" stroke="#1d3a2c" '
+           f'stroke-width="0.45"/>\n'
+           f'  <path d="{poly_d(top.buffer(0.8).difference(top))}" fill="#000000" opacity="0.25" '
+           f'fill-rule="evenodd" transform="translate(0.8 1.2)"/>\n'
+           f'  <path d="{poly_d(top)}" fill="#f4efe6" fill-rule="evenodd" stroke="#b9ab95" '
+           f'stroke-width="0.35"/>\n'
+           f'  <path d="{line_d(top_score)}" fill="none" stroke="#b9ab95" stroke-width="0.5" '
+           f'stroke-linecap="round"/>\n</svg>\n')
+    with open(os.path.join(PREVIEW_DIR, name), "w") as fh:
+        fh.write(svg)
 
 
 # --------------------------------------------------------------------------
@@ -406,6 +442,11 @@ def main():
     art, ties, score = door_wreath()
     emit("door-wreath.svg", "Merry Christmas from the Youngs - wreath", cut=art, score=score)
     report("door-wreath.svg", art, ties)
+
+    backing = door_wreath_backing()
+    emit("door-wreath-backing.svg", "Merry Christmas from the Youngs - wreath backing", cut=backing)
+    report("door-wreath-backing.svg", backing)
+    layered_preview("door-wreath-layered.svg", "Wreath on its backing disc", art, score, backing)
 
     outline, score, engrave = door_bauble()
     emit("door-bauble.svg", "Merry Christmas from the Youngs - bauble",

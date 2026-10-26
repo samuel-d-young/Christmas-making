@@ -1,28 +1,65 @@
-# "Merry Christmas from the Youngs": front-door sign concepts
+# "Merry Christmas from the Youngs": front-door sign
 
-Three laser-cut designs for the front door, each sized for a **Glowforge Aura
-on a 300 × 300 mm sheet**, the same setup as [stocking-template](../stocking-template/).
-They're concepts to choose between. Pick one (or mix them) and it can be
-refined from there.
+Laser-cut sign for the front door, sized for a **Glowforge Aura on a
+300 × 300 mm sheet**, the same setup as [stocking-template](../stocking-template/).
 
-All lettering is real outlines in a script font, not live text, so the
-Glowforge cuts exactly what you see.
+## The chosen design: two-layer wreath
+
+<p align="center"><img src="preview/door-wreath-layered.svg" width="55%" alt="Wreath detail glued onto a painted backing disc"></p>
+
+Two pieces, each cut from its own 300 × 300 mm sheet:
+
+| Layer | File | Size | What it is |
+|---|---|---|---|
+| Top | [`svg/door-wreath.svg`](svg/door-wreath.svg) | Ø 268 mm | The detail: a ring with scored "ribbon-wrap" marks, holly and berries at the foot, "Merry Christmas" spanning the ring and "from the Youngs" on a rail. **One piece.** |
+| Bottom | [`svg/door-wreath-backing.svg`](svg/door-wreath-backing.svg) | Ø 268 mm | A plain disc the same size, so the two edges sit flush. |
+
+Both layers have a **5 mm ribbon hole** in the same spot at the top of the
+band. It's how the sign hangs and how you line the layers up.
+
+The top layer is still welded into a single piece, even though the backing
+would hold loose letters. One piece is far easier to paint and glue than a
+dozen letters and an *i* dot, and it positions itself: once the rim is flush
+and the holes line up, everything is where it should be.
+
+### Putting it together
+
+1. **Cut both layers** in 3 mm plywood. The backing is a plain circle and
+   cuts quickly. The top layer has a lot of path, so give it time.
+2. **Paint before gluing.** Contrast makes it: e.g. a deep green or navy
+   backing with a white, cream or gold top layer, as in the preview. Paint
+   the backing's edge too.
+3. **Glue.** Use exterior-grade wood glue (Titebond II/III or similar) or a
+   polyurethane glue, spread thinly on the *back of the top layer* with a
+   small brush. Keep it away from the letter edges or it squeezes out
+   onto the paint.
+4. **Line up.** Push a pencil or a 5 mm dowel through both ribbon holes to
+   fix the rotation, then nudge the rim flush all the way round.
+5. **Weight it flat** under a board and some books for a few hours.
+6. **Seal** with two coats of exterior varnish, including the edges, then
+   thread ribbon through the hole to hang.
+
+If you would rather hang it from a door hook than a ribbon, glue a small
+sawtooth hanger to the back of the disc instead.
+
+## Earlier concepts
+
+The other two ideas are kept for reference:
 
 | | Concept | Size | How it's made |
 |---|---|---|---|
-| 1 | [`svg/door-script.svg`](svg/door-script.svg): **Script & swash** | 273 × 94 mm | Freestanding lettering, cut out. A calligraphic swash runs from the foot of the *M* under "from the Youngs" up to the last *s*, so the whole sign is **one piece**. Hangs level from one ribbon hole above its centre of mass. |
-| 2 | [`svg/door-wreath.svg`](svg/door-wreath.svg): **Wreath** | 268 × 268 mm | A ring with scored "ribbon-wrap" marks and a holly-and-berries cluster at the foot. "Merry Christmas" spans the ring and welds into both sides; "from the Youngs" sits on a rail that sweeps up into the ring. One piece that goes straight on a wreath hook. |
-| 3 | [`svg/door-bauble.svg`](svg/door-bauble.svg): **Bauble** | 224 × 265 mm | Bauble-shaped plaque with a cap and hanging loop. Lettering is **engraved**, with scored zig-zag bands. The sturdiest option and the finest lettering, because engraving keeps the hairlines. |
+| 1 | [`svg/door-script.svg`](svg/door-script.svg): **Script & swash** | 273 × 94 mm | Freestanding lettering on a calligraphic swash, one piece, one ribbon hole. |
+| 3 | [`svg/door-bauble.svg`](svg/door-bauble.svg): **Bauble** | 224 × 265 mm | Bauble-shaped plaque with the lettering engraved. |
 
 <p align="center">
   <img src="preview/door-script.svg" width="32%" alt="Concept 1: freestanding script on a swash">
-  <img src="preview/door-wreath.svg" width="32%" alt="Concept 2: script inside a holly wreath">
+  <img src="preview/door-wreath.svg" width="32%" alt="Wreath top layer on its own">
   <img src="preview/door-bauble.svg" width="32%" alt="Concept 3: engraved bauble plaque">
 </p>
 
 ## Lettering
 
-Concepts 1 and 2 use **Great Vibes**: elegant, with a confident thick-thin
+The wreath (and concept 1) uses **Great Vibes**: elegant, with a confident thick-thin
 contrast, and its letters join into very few separate pieces, which matters
 when you cut script out. Concept 3 uses **Pinyon Script**, a finer copperplate
 hand that suits engraving. Any of the three bundled fonts can go on any
@@ -56,15 +93,16 @@ For the cut concepts the generator:
 Each run prints a check:
 
 ```
-door-script.svg    273.0 x  94.3 mm  sheet edge 13.5 mm  pieces 1  ties  5  thin wood 75.8 mm2
-door-wreath.svg    268.0 x 268.0 mm  sheet edge 12.0 mm  pieces 1  ties  4  thin wood 85.7 mm2
-door-bauble.svg    224.0 x 265.0 mm  sheet edge 15.0 mm  pieces 1  ties  0  thin wood  0.0 mm2
+door-script.svg           273.0 x  94.3 mm  sheet edge 13.5 mm  pieces 1  ties  5  thin wood 75.8 mm2
+door-wreath.svg           268.0 x 268.0 mm  sheet edge 12.0 mm  pieces 1  ties  4  thin wood 85.7 mm2
+door-wreath-backing.svg   268.0 x 268.0 mm  sheet edge 12.0 mm  pieces 1  ties  0  thin wood  0.0 mm2
+door-bauble.svg           224.0 x 265.0 mm  sheet edge 15.0 mm  pieces 1  ties  0  thin wood  0.0 mm2
 ```
 
 *thin wood* is the area narrower than 1.6 mm. On the cut concepts that's
 almost all pointed stroke ends and holly spikes, which taper to a point by
-design. Even so, **cut concepts 1 and 2 in 3 mm plywood, not thinner**, and
-handle the fresh cut by the frame, not the letters.
+design. Even so, **cut the wreath top in 3 mm plywood, not thinner**, and
+handle the fresh cut by the ring, not the letters.
 
 ## Cutting and finishing
 
@@ -87,7 +125,7 @@ python3 generate_door_sign.py      # rewrites svg/ and preview/
 ```
 
 The wording lives in `LINE_1` / `LINE_2`, each concept is one function
-(`door_script`, `door_wreath`, `door_bauble`), and `CUT_TEXT_GROW`,
-`BRIDGE_W` and `MIN_FEATURE` control how robust the cut lettering is.
+(`door_wreath` and `door_wreath_backing` for the chosen design), and `CUT_TEXT_GROW`,
+`BRIDGE_W`, `MIN_FEATURE` and `HANG_HOLE_DIA` control how robust the cut lettering is.
 `scripttext.py` does the font work: HarfBuzz shaping (so the script's joins
 and kerning are right) turned into millimetre geometry.

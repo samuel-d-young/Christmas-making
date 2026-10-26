@@ -11,5 +11,5 @@ Files and patterns for Christmas craft projects.
   finished wooden stockings for kids to paint and hang.
 - **[door-sign](door-sign/)**: "Merry Christmas from the Youngs" front-door
   sign in elegant script, for the same Glowforge Aura and 300 × 300 mm sheet.
-  Three concepts: freestanding script on a swash, a holly wreath, and an
-  engraved bauble.
+  A two-layer holly wreath: the lettered detail glues onto a plain backing
+  disc.
