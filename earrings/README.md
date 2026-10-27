@@ -56,6 +56,14 @@ sheet you load.
 Ribbon garland, bow, star topper, heart and bauble string. Each has its own
 `-green` / `-red` files in [`svg/`](svg/).
 
+## Gem drop earrings (outline only)
+
+[`svg/gem-outline.svg`](svg/gem-outline.svg) is a pair of faceted gem drops
+with a teardrop bail. It's **just the silhouette**: one cut line per
+earring, no internal facet lines. Each is 27 × 50 mm. The bail, link and gem
+are joined by a short stem so no neck is narrower than 1.8 mm. Regenerate
+with `python3 generate_gem_outline.py`.
+
 ## Material and assembly
 
 - Earrings: **1.5–3 mm** plywood or basswood, painted or stained green and
