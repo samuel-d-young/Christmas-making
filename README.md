@@ -13,3 +13,8 @@ Files and patterns for Christmas craft projects.
   sign in elegant script, for the same Glowforge Aura and 300 × 300 mm sheet.
   A two-layer holly wreath: the lettered detail glues onto a plain backing
   disc.
+- **[earrings](earrings/)**: two-layer green and red Christmas tree earrings
+  (star topper, plus four other ideas) and a car-with-tree keyring, with one
+  cut sheet per colour.
+- **[name-hangers](name-hangers/)**: "Zac" and "Jake" layered name hangers
+  for the wall, red script on a green backing.
