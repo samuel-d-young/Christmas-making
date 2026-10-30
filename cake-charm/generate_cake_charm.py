@@ -39,18 +39,22 @@ GROW = 0.45                 # thicken the script's hairlines so the acrylic surv
 WORD_GAP = 0.32             # space between words, as a fraction of the font size
 RAIL_DROP = 0.6             # underline sits this far below the baseline, mm
 PAD = 5.0                   # artboard margin
+SIGNATURE_GAP = 0.06       # signature layout: words close enough that a short stroke joins them
+TWO_LINE_W = 95.0           # two-line layout is narrower, for a smaller cake
+TWO_LINE_OVERLAP = 0.5      # how far the top line sinks onto the ascenders below
 MIN_FEATURE = 1.0           # thinnest acrylic we report on
 
 
-def words_line(words, size, x=0.0, baseline=0.0):
+def words_line(words, size, x=0.0, baseline=0.0, gap=WORD_GAP):
     """Lay words out with a real gap between them (the font's own space is
-    so narrow the words run together once thickened)."""
+    so narrow the words run together once thickened).  A negative gap
+    overlaps the words so their strokes join."""
     out = []
     for w in words:
         g, _ = text_geometry(GREAT_VIBES, w, size)
         x0, _, x1, _ = g.bounds
         out.append(affinity.translate(g, x - x0, baseline))
-        x += (x1 - x0) + WORD_GAP * size
+        x += (x1 - x0) + gap * size
     return unary_union(out)
 
 
@@ -61,13 +65,14 @@ def underline(x0, x1, y):
     return swash(path, 1.5, 0.9)
 
 
-def finish(letters, rail_from, rail_to, baseline):
-    """Thicken, add the underline, weld into one piece, scale to CHARM_W."""
-    art = unary_union([letters.buffer(GROW, quad_segs=8),
-                       underline(rail_from, rail_to, baseline + RAIL_DROP)])
+def finish(letters, rail_from=None, rail_to=None, baseline=0.0, width=CHARM_W):
+    """Thicken, add the underline (if any), weld into one piece, scale to width."""
+    art = letters.buffer(GROW, quad_segs=8)
+    if rail_from is not None:
+        art = unary_union([art, underline(rail_from, rail_to, baseline + RAIL_DROP)])
     art, ties = weld(art, width=1.2)
     x0, y0, x1, y1 = art.bounds
-    s = CHARM_W / (x1 - x0)
+    s = width / (x1 - x0)
     art = affinity.scale(art, s, s, origin=(x0, y0))
     return affinity.translate(art, PAD - x0, PAD - y0), ties
 
@@ -92,6 +97,29 @@ def stacked():
     return finish(letters, mx0 + 4.0, mx1 - 0.5, 0.0)
 
 
+def signature():
+    """Stacked, no underline: the words packed so their strokes join, like
+    the 'Happy Birthday' in the reference photo."""
+    size = 20.0
+    main = words_line(["Van", "Middelkoops"], size, gap=SIGNATURE_GAP)
+    mx0, my0, _, _ = main.bounds
+    the, _ = text_geometry(GREAT_VIBES, "the", size * 0.75)
+    the = affinity.translate(the, mx0 + 0.5 - the.bounds[0], my0 + 0.6)
+    return finish(unary_union([main, the]))
+
+
+def two_lines():
+    """'the Van' centred over 'Middelkoops': narrower and taller, for a
+    smaller cake.  The top line rests on Middelkoops' tall ascenders."""
+    size = 20.0
+    bottom = words_line(["Middelkoops"], size)
+    top = words_line(["the", "Van"], size * 0.85)
+    bx0, by0, bx1, _ = bottom.bounds
+    tx0, _, tx1, _ = top.bounds
+    top = affinity.translate(top, (bx0 + bx1) / 2 - (tx0 + tx1) / 2, by0 + TWO_LINE_OVERLAP)
+    return finish(unary_union([bottom, top]), bx0 + 2.0, bx1 - 0.5, 0.0, width=TWO_LINE_W)
+
+
 def thin_area(geom):
     r = MIN_FEATURE / 2
     return geom.difference(geom.buffer(-r, quad_segs=6).buffer(r, quad_segs=6)).area
@@ -107,7 +135,9 @@ def main():
     os.makedirs(SVG_DIR, exist_ok=True)
     os.makedirs(PREVIEW_DIR, exist_ok=True)
     for key, title, build in (("charm-one-line", "the Van Middelkoops - one line", one_line),
-                              ("charm-stacked", "the Van Middelkoops - stacked", stacked)):
+                              ("charm-stacked", "the Van Middelkoops - stacked", stacked),
+                              ("charm-signature", "the Van Middelkoops - signature", signature),
+                              ("charm-two-lines", "the Van Middelkoops - two lines", two_lines)):
         art, ties = build()
         _, _, x1, y1 = art.bounds
         w, h = x1 + PAD, y1 + PAD
