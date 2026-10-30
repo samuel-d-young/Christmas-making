@@ -3,6 +3,16 @@
 A flat script name that presses onto the front of the cake. It's in the same
 Great Vibes script as the door sign and the Zac and Jake hangers.
 
+## Chosen: version 3, signature
+
+**Cut [`svg/charm-signature.svg`](svg/charm-signature.svg).** 125 × 34 mm, one
+piece, no underline: a small "the" resting on the *V*, and the words joined
+stroke to stroke.
+
+<p align="center"><img src="preview/charm-signature.svg" width="80%" alt="the Van Middelkoops, signature layout"></p>
+
+## All four versions
+
 | | Layout | File | Size |
 |---|---|---|---|
 | 1 | **One line**, on a fine underline | [`svg/charm-one-line.svg`](svg/charm-one-line.svg) | 125 × 19 mm |
