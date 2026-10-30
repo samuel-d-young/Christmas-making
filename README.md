@@ -18,3 +18,5 @@ Files and patterns for Christmas craft projects.
   cut sheet per colour.
 - **[name-hangers](name-hangers/)**: "Zac" and "Jake" layered name hangers
   for the wall, red script on a green backing.
+- **[cake-charm](cake-charm/)**: "the Van Middelkoops" script charm for the
+  front of a cake, in one-line and stacked layouts.
